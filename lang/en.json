@@ -1,0 +1,19 @@
+{
+    "errors": {
+        "user_not_found": "User not found",
+        "invalid_password": "Invalid password",
+        "validation_failed": "Validation failed",
+        "internal_error": "Something went wrong. Please try again later."
+    },
+    "success": {
+        "created": "{field} created successfully",
+        "updated": "{field} updated successfully",
+        "list": "list",
+        "login_successful": "Login successful"
+    },
+    "validations": {
+        "required": "{field} is required",
+        "email_invalid": "Email format is invalid",
+        "password_min_length": "Password must be at least {min} characters long"
+    }
+}

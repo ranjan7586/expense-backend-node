@@ -1,0 +1,31 @@
+{
+  "name": "expense-backend-node",
+  "version": "1.0.0",
+  "description": "expense backend with node",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranjan7586/expense-backend-node.git"
+  },
+  "author": "ranjan7586",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ranjan7586/expense-backend-node/issues"
+  },
+  "homepage": "https://github.com/ranjan7586/expense-backend-node#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.4",
+    "nodemon": "^3.1.7",
+    "uuid": "^11.0.3"
+  }
+}
