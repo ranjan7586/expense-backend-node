@@ -22,16 +22,18 @@ export const loginUser = async (req, res) => {
     }
     try {
         const user = await User.findOne({ email: req.body.email }).select('+password');
-        if (user.password) {
-            const comparePassword = await user.comparePassword(req.body.password, user.password);
-            if (!comparePassword) {
-                return res.status(400).json({ error: "Invalid credentials" });
+        if (user) {
+            if (user.password) {
+                const comparePassword = await user.comparePassword(req.body.password, user.password);
+                if (!comparePassword) {
+                    return res.status(400).json({ error: "Invalid credentials" });
+                }
+                const token = await user.jwtToken(user._id);
+                return res.status(200).json({ user, message: "Login successful", token });
             }
-            const token = await user.jwtToken(user._id);
-            return res.status(200).json({ user, message: "Login successful", token });
         }
         if (!user) {
-            return res.status(400).json({ error: "User not found" });
+            return res.status(400).json({ error: "User not found! Please sign up" });
         }
 
     } catch (error) {
@@ -43,7 +45,7 @@ export const loginUser = async (req, res) => {
 export const indexUsers = async (req, res) => {
     try {
         let users = await User.find();
-        return res.status(200).json({message:`Users ${req.lang.success.list}`, users});
+        return res.status(200).json({ message: `Users ${req.lang.success.list}`, users });
     } catch (error) {
         return res.status(200).json({ error: error.message });
     }

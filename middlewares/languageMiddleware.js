@@ -5,7 +5,6 @@ const fileUrl = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(fileUrl);
 const loadLanguageFile = (lang) =>{
     const filePath = path.join(__dirname,`../lang/${lang}.json`);
-    console.log(fileUrl)
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(fileContent);
 }

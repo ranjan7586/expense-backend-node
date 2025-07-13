@@ -5,9 +5,9 @@ import { jwtVerify } from '../middlewares/jwtmiddleware.js';
 
 const router = express.Router();
 
-router.post('/register',userValidation, registerUser);
 router.post('/login', loginUser);
+router.post('/register',userValidation, registerUser);
 
 router.use(jwtVerify);
-router.get('/users/get-users', indexUsers);
+router.get('/get-users', indexUsers);
 export default router;
