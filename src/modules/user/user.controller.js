@@ -1,5 +1,11 @@
 import { validationResult } from "express-validator";
 import User from "../user/user.model.js";
+import jwt from "jsonwebtoken";
+import RefreshToken from "../token/refreshtoken.model.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../../utils/generateTokens.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -36,10 +42,28 @@ export const loginUser = async (req, res) => {
         if (!comparePassword) {
           return res.status(400).json({ error: "Invalid credentials" });
         }
-        const token = await user.jwtToken(user._id);
+
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+        console.log(user._id)
+        await RefreshToken.create({
+          user: user._id,
+          token: refreshToken,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+        // const token = await user.jwtToken(user._id);
+
+        // const token = await user.jwtToken(user._id);
         return res
           .status(200)
-          .json({ user, message: "Login successful", token });
+          .json({ user, message: "Login successful", accessToken });
       }
     }
     if (!user) {
@@ -59,4 +83,38 @@ export const indexUsers = async (req, res) => {
   } catch (error) {
     return res.status(200).json({ error: error.message });
   }
+};
+
+export const refreshToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+      return res.status(401).json({ error: "Unauthorized Access" });
+    }
+    const refreshTokenDoc = await RefreshToken.findOne({ token: refreshToken });
+    if (!refreshTokenDoc) {
+      return res.status(401).json({ error: "Unauthorized Access" });
+    }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        return res.status(401).json({ error: "Unauthorized Access" });
+      }
+      const accessToken = generateAccessToken({ userId: user.userId });
+      return res.status(200).json({ accessToken });
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const logOutUser = async (req, res) => {
+  
+  const token = req.cookies.refreshToken;
+  if (token) {
+    await RefreshToken.findOneAndDelete({ token });
+  }
+
+  res.clearCookie("refreshToken");
+  return res.status(200).json({ message: "Logout successful" });
 };
