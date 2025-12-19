@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 import User from "../user/user.model.js";
 import jwt from "jsonwebtoken";
-import RefreshToken from "../token/refreshtoken.model.js";
+import RefreshToken from "../auth/refreshtoken.model.js";
 import {
   generateAccessToken,
   generateRefreshToken,
