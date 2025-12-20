@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const refreshTokenSchema = mongoose.Schema(
+export interface IRefreshToken extends mongoose.Document {
+  _id: string;
+  user: string;
+  token: string;
+  expiresAt: Date;
+  deletedAt: Date | null;
+}
+
+const refreshTokenSchema: Schema = new mongoose.Schema<IRefreshToken>(
   {
     user: {
       type: String,

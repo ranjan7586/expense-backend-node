@@ -1,8 +1,24 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
+import jwt, { Secret, SignOptions } from "jsonwebtoken";
+import mongoose, { Schema, Document } from "mongoose";
+import { StringValue } from "ms";
 import { v4 as uuidv4 } from "uuid";
-const userSchema = new mongoose.Schema(
+
+export interface IUser extends Document {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  createdBy: string;
+  updatedBy: string;
+  deletedAt: Date;
+  deletedBy: string;
+  comparePassword: (password: string, hash: string) => boolean;
+  jwtToken: (user_id: string) => string;
+}
+
+const userSchema: Schema = new mongoose.Schema<IUser>(
   {
     _id: {
       type: String,
@@ -52,23 +68,27 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre("save", function (next) {
+userSchema.pre<IUser>("save", function (next) {
   if (!this.isModified("password")) return next();
   const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(this.password, salt);
-  this.password = hash;
+  this.password = bcrypt.hashSync(this.password, salt);
   next();
 });
 
 userSchema.index({ email: 1 }, { unique: true });
 
-userSchema.methods.comparePassword = function (password, hash) {
+userSchema.methods.comparePassword = function (
+  password: string,
+  hash: string
+): boolean {
   return bcrypt.compareSync(password, hash);
 };
-userSchema.methods.jwtToken = function (user_id) {
-  return jwt.sign({ user_id }, process.env.SECRET_KEY, {
-    expiresIn: process.env.EXPIRES_IN,
-  });
+userSchema.methods.jwtToken = function (user_id: string): string {
+  const secret: Secret = process.env.SECRET_KEY as Secret;
+  const options: SignOptions = {
+    expiresIn: process.env.EXPIRES_IN as StringValue,
+  };
+  return jwt.sign({ user_id }, secret, options);
 };
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model<IUser>("User", userSchema);

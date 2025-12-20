@@ -1,8 +1,10 @@
 {
     "errors": {
         "user_not_found": "User not found",
+        "unauthorized": "Unauthorized access",
         "invalid_password": "Invalid password",
         "validation_failed": "Validation failed",
+        "invalid_token": "Invalid or expired token",
         "internal_error": "Something went wrong. Please try again later."
     },
     "success": {

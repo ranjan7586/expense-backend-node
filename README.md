@@ -1,51 +1,34 @@
 
 ```
 expense-backend-node
-├─ dist
-│  ├─ app.js
-│  ├─ config
-│  │  └─ db.js
-│  ├─ middlewares
-│  │  ├─ auth.middleware.js
-│  │  └─ language.middleware.js
-│  ├─ modules
-│  │  ├─ auth
-│  │  │  └─ refreshtoken.model.js
-│  │  └─ user
-│  │     ├─ user.controller.js
-│  │     ├─ user.model.js
-│  │     ├─ user.routes.js
-│  │     └─ user.validation.js
-│  ├─ routes
-│  │  └─ index.js
-│  ├─ server.js
-│  └─ utils
-│     └─ generateTokens.js
 ├─ package-lock.json
 ├─ package.json
 ├─ README.md
 ├─ src
 │  ├─ app.ts
 │  ├─ config
-│  │  └─ db.js
+│  │  └─ db.ts
 │  ├─ lang
 │  │  └─ en.json
 │  ├─ middlewares
-│  │  ├─ auth.middleware.js
-│  │  └─ language.middleware.js
+│  │  ├─ auth.middleware.ts
+│  │  └─ language.middleware.ts
 │  ├─ modules
 │  │  ├─ auth
-│  │  │  └─ refreshtoken.model.js
+│  │  │  ├─ auth.service.ts
+│  │  │  └─ refreshtoken.model.ts
 │  │  └─ user
-│  │     ├─ user.controller.js
-│  │     ├─ user.model.js
-│  │     ├─ user.routes.js
-│  │     └─ user.validation.js
+│  │     ├─ user.controller.ts
+│  │     ├─ user.model.ts
+│  │     ├─ user.routes.ts
+│  │     └─ user.validation.ts
 │  ├─ routes
-│  │  └─ index.js
+│  │  └─ index.ts
 │  ├─ server.ts
+│  ├─ types
+│  │  ├─ express.d.ts
+│  │  └─ tokens.d.ts
 │  └─ utils
-│     └─ generateTokens.js
 └─ tsconfig.json
 
 ```
