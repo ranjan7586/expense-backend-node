@@ -7,6 +7,7 @@ export const globalErrorHandler = (
   _next: NextFunction
 ) => {
   // Mongo duplicate key error
+  console.log("error enter");
   if (
     typeof err === "object" &&
     err !== null &&

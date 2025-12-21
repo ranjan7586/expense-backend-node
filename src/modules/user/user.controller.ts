@@ -1,5 +1,6 @@
 import User from "./user.model";
-import { Request, Response } from "express";
+import { Request } from "express";
+import { Response } from "express";
 import { AppError } from "../../utils/AppError";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import { catchAsync } from "../../utils/catchAsync";
@@ -22,6 +23,7 @@ class UserController {
   });
 
   loginUser = catchAsync(async (req: Request, res: Response) => {
+    console.log("Controller Loaded");
     if (!req.body.email || !req.body.password) {
       throw new AppError("Please provide all required fields", 400);
     }

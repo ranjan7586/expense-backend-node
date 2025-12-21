@@ -9,6 +9,7 @@ export class AppError extends Error {
    */
   constructor(message: string, statusCode: number) {
     super(message);
+    console.log(statusCode)
     this.statusCode = statusCode;
     this.isOperational = true;
     Error.captureStackTrace(this, this.constructor);

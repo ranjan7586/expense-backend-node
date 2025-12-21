@@ -15,8 +15,8 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(setLanguage);
-app.use(globalErrorHandler);
 
 app.use("/api/v1", routes);
+app.use(globalErrorHandler);
 
 export default app;

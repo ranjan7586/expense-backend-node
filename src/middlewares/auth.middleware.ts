@@ -18,6 +18,6 @@ export const jwtVerify = (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded;
     next();
   } catch (error: any) {
-    return next(new AppError(req.lang.error.invalid_token, 401));
+    next(new AppError(req.lang.errors.invalid_token, 401));
   }
 };
