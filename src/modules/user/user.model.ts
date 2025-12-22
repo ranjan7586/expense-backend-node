@@ -1,8 +1,9 @@
 import bcrypt from "bcryptjs";
-import jwt, { Secret, SignOptions } from "jsonwebtoken";
-import mongoose, { Schema, Document } from "mongoose";
 import { StringValue } from "ms";
 import { v4 as uuidv4 } from "uuid";
+import { Role } from "../../types/roles";
+import mongoose, { Schema, Document } from "mongoose";
+import jwt, { Secret, SignOptions } from "jsonwebtoken";
 
 export interface IUser extends Document {
   _id: string;
@@ -10,6 +11,7 @@ export interface IUser extends Document {
   lastname: string;
   email: string;
   password: string;
+  role: string;
   createdBy: string;
   updatedBy: string;
   deletedAt: Date;
@@ -45,6 +47,11 @@ const userSchema: Schema = new mongoose.Schema<IUser>(
     password: {
       type: String,
       required: true,
+    },
+    role: {
+      type: String,
+      enum: Object.values(Role),
+      default: Role.USER,
     },
     createdBy: {
       type: String,

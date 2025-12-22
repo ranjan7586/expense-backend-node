@@ -12,6 +12,7 @@ expense-backend-node
 │  │  └─ en.json
 │  ├─ middlewares
 │  │  ├─ auth.middleware.ts
+│  │  ├─ error.middleware.ts
 │  │  └─ language.middleware.ts
 │  ├─ modules
 │  │  ├─ auth
@@ -29,6 +30,8 @@ expense-backend-node
 │  │  ├─ express.d.ts
 │  │  └─ tokens.d.ts
 │  └─ utils
+│     ├─ AppError.ts
+│     └─ catchAsync.ts
 └─ tsconfig.json
 
 ```

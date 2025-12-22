@@ -3,5 +3,6 @@ export interface RefreshTokenPayload {
 }
 
 export interface AccessTokenPayload {
+  role: string;
   userId: string;
 }

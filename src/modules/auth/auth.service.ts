@@ -6,8 +6,8 @@ import jwt from "jsonwebtoken";
  * @param {string} userId - The ID of the user for whom to generate an access token.
  * @returns {string} - The generated access token.
  */
-export const generateAccessToken = (userId: string) => {
-  return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET as string, {
+export const generateAccessToken = (userId: string, role: string) => {
+  return jwt.sign({ userId, role }, process.env.ACCESS_TOKEN_SECRET as string, {
     expiresIn: "15m",
   }); // 15 minutes
 };

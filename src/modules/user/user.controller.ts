@@ -25,13 +25,13 @@ class UserController {
   loginUser = catchAsync(async (req: Request, res: Response) => {
     console.log("Controller Loaded");
     if (!req.body.email || !req.body.password) {
-      throw new AppError("Please provide all required fields", 400);
+      throw new AppError(req.lang.errors.all_fields_required, 400);
     }
     const user = await User.findOne({ email: req.body.email }).select(
       "+password"
     );
     if (!user || !user.password) {
-      throw new AppError("Invalid credentials", 404);
+      throw new AppError(req.lang.errors.invalid_credentials, 404);
     }
 
     const comparePassword = await user.comparePassword(
@@ -39,10 +39,10 @@ class UserController {
       user.password
     );
     if (!comparePassword) {
-      throw new AppError("Invalid credentials", 400);
+      throw new AppError(req.lang.errors.invalid_credentials, 400);
     }
 
-    const accessToken = generateAccessToken(user._id);
+    const accessToken = generateAccessToken(user._id, user.role);
     const refreshToken = generateRefreshToken(user._id);
     await RefreshToken.create({
       user: user._id,
@@ -59,7 +59,7 @@ class UserController {
     // const token = await user.jwtToken(user._id);
 
     // const token = await user.jwtToken(user._id);
-    res.status(200).json({ user, message: "Login successful", accessToken });
+    res.status(200).json({ user, message: req.lang.success.login_successful, accessToken });
   });
 
   /**
@@ -89,20 +89,24 @@ class UserController {
   refreshToken = catchAsync(async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-      throw new AppError("Unauthorized Access", 401);
+      throw new AppError(req.lang.errors.unauthorized_access, 401);
     }
     const refreshTokenDoc = await RefreshToken.findOne({
       token: refreshToken,
     });
     if (!refreshTokenDoc) {
-      throw new AppError("Unauthorized Access", 401);
+      throw new AppError(req.lang.errors.unauthorized_access, 401);
     }
 
     const decoded = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET as string
     ) as RefreshTokenPayload;
-    const accessToken: string = generateAccessToken(decoded.userId);
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      throw new AppError(req.lang.errors.user_not_found, 404);
+    }
+    const accessToken: string = generateAccessToken(user._id, user.role);
     return res.status(200).json({ accessToken });
   });
 
@@ -113,7 +117,7 @@ class UserController {
     }
 
     res.clearCookie("refreshToken");
-    return res.status(200).json({ message: "Logout successful" });
+    return res.status(200).json({ message: req.lang.success.logout_successful });
   });
 }
 

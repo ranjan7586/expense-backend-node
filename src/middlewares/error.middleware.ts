@@ -7,7 +7,6 @@ export const globalErrorHandler = (
   _next: NextFunction
 ) => {
   // Mongo duplicate key error
-  console.log("error enter");
   if (
     typeof err === "object" &&
     err !== null &&
@@ -16,7 +15,7 @@ export const globalErrorHandler = (
   ) {
     return res.status(409).json({
       status: "error",
-      message: "Email already exists",
+      message: _req.lang.errors.email_exists,
     });
   }
 
@@ -29,6 +28,6 @@ export const globalErrorHandler = (
   console.log(err);
   return res.status(500).json({
     status: "error",
-    message: "Internal server error",
+    message: _req.lang.errors.internal_server_error,
   });
 };

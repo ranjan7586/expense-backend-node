@@ -6,7 +6,6 @@ dotenv.config();
 
 const PORT = Number(process.env.PORT || 8080);
 const HOST = process.env.HOST || "localhost";
-console.log(HOST)
 connectDB();
 
 app.listen(PORT, HOST, () => {
