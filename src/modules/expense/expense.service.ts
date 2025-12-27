@@ -1,6 +1,6 @@
-import AppError from "../../utils/AppError";
-import ExpenseCategory from "./expense.category.model";
+import { AppError } from "../../utils/AppError";
 import Expense, { IExpense } from "./expense.model";
+import ExpenseCategory from "./expense.category.model";
 
 export const createExpense = async (
   expense: Partial<IExpense & { category_id: string }>,

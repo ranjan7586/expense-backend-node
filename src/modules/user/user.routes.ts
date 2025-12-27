@@ -1,7 +1,7 @@
 import express from "express";
 import userController from "./user.controller";
 import { userValidation } from "./user.validation";
-import { jwtVerify } from "../../middlewares/auth.middleware";
+import { authMiddleware } from "../../middlewares/auth.middleware";
 import authorize from "../../middlewares/rbac.middleware";
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router.post("/logout", userController.logOutUser);
 router.post("/refresh-token", userController.refreshToken);
 router.post("/register", userValidation, userController.registerUser);
 
-router.use(jwtVerify);
+router.use(authMiddleware);
 router.get("/", authorize(["admin"]), userController.indexUsers);
 
 export default router;

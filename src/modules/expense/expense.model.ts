@@ -1,9 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
-import {
-  ExpenseFor,
-  ExpenseMode
-} from "../../types/expense";
 import { IExpenseCategory } from "./expense.category.model";
+import { ExpenseFor, ExpenseMode } from "../../types/expense";
 
 export interface IExpense extends Document {
   title: string;

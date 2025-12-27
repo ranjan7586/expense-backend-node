@@ -1,19 +1,13 @@
-import { z } from "zod";
-
-export const createExpenseCategorySchema = z.object({
-  body: z.object({
-    name: z.string({
-      required_error: "Name is required",
-    }),
-    type: z.string({
-      required_error: "Type is required",
-    }),
-  }),
-});
-
-export const updateExpenseCategorySchema = z.object({
-  body: z.object({
-    name: z.string().optional(),
-    type: z.string().optional(),
-  }),
-});
+import { body } from "express-validator";
+export const expenseCategoryValidation = [
+  body("name")
+    .notEmpty()
+    .withMessage("Name is required")
+    .isString()
+    .withMessage("Name must be a string"),
+  body("type")
+    .notEmpty()
+    .withMessage("Type is required")
+    .isString()
+    .withMessage("Type must be a string"),
+];

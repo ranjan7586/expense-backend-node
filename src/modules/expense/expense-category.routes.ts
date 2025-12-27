@@ -1,28 +1,24 @@
 import { Router } from "express";
-import {
-  createExpenseCategoryController,
-  deleteExpenseCategoryController,
-  getExpenseCategoriesController,
-  getExpenseCategoryByIdController,
-  updateExpenseCategoryController,
-} from "./expense-category.controller";
+// import { validate } from "../../middlewares/validate.middleware";
 import { validate } from "../../middlewares/validate.middleware";
-import {
-  createExpenseCategorySchema,
-  updateExpenseCategorySchema,
-} from "./expense-category.validation";
+import { expenseCategoryValidation } from "./expense-category.validation";
+import expenseCategoryController from "./expense-category.controller";
+import { authMiddleware } from "../../middlewares/auth.middleware";
 
 const router = Router();
 
-router
-  .route("/")
-  .get(getExpenseCategoriesController)
-  .post(validate(createExpenseCategorySchema), createExpenseCategoryController);
+router.use(authMiddleware);
+router.get("/", expenseCategoryController.getExpenseCategories);
+router.post(
+  "/create",
+  validate(expenseCategoryValidation),
+  expenseCategoryController.createExpenseCategory
+);
 
-router
-  .route("/:id")
-  .get(getExpenseCategoryByIdController)
-  .patch(validate(updateExpenseCategorySchema), updateExpenseCategoryController)
-  .delete(deleteExpenseCategoryController);
+// router
+//   .route("/:id")
+//   .get(getExpenseCategoryByIdController)
+//   .patch(validate(updateExpenseCategorySchema), updateExpenseCategoryController)
+//   .delete(deleteExpenseCategoryController);
 
 export default router;

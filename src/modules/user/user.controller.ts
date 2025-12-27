@@ -18,6 +18,7 @@ class UserController {
     if (!errors.isEmpty()) {
       throw new AppError(errors.array()[0].msg, 400);
     }
+    req.body.role != "user" && (req.body.role = "user");
     const user = await User.create(req.body);
     return res.status(201).json({ user });
   });
@@ -59,7 +60,9 @@ class UserController {
     // const token = await user.jwtToken(user._id);
 
     // const token = await user.jwtToken(user._id);
-    res.status(200).json({ user, message: req.lang.success.login_successful, accessToken });
+    res
+      .status(200)
+      .json({ user, message: req.lang.success.login_successful, accessToken });
   });
 
   /**
@@ -117,7 +120,9 @@ class UserController {
     }
 
     res.clearCookie("refreshToken");
-    return res.status(200).json({ message: req.lang.success.logout_successful });
+    return res
+      .status(200)
+      .json({ message: req.lang.success.logout_successful });
   });
 }
 

@@ -7,22 +7,17 @@ import {
   updateExpenseController,
 } from "./expense.controller";
 import { validate } from "../../middlewares/validate.middleware";
-import {
-  createExpenseSchema,
-  updateExpenseSchema,
-} from "./expense.validation";
+import { expenseValidation } from "./expense.validation";
 
 const router = Router();
 
-router
-  .route("/")
-  .get(getExpensesController)
-  .post(validate(createExpenseSchema), createExpenseController);
+router.get("/", getExpensesController);
+router.post("/create", expenseValidation, createExpenseController);
 
-router
-  .route("/:id")
-  .get(getExpenseByIdController)
-  .patch(validate(updateExpenseSchema), updateExpenseController)
-  .delete(deleteExpenseController);
+// router
+//   .route("/:id")
+//   .get(getExpenseByIdController)
+//   .patch(validate(updateExpenseSchema), updateExpenseController)
+//   .delete(deleteExpenseController);
 
 export default router;

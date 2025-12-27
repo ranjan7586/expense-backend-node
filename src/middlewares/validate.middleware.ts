@@ -1,24 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import { AnyZodObject, ZodError } from "zod";
+import { validationResult, ValidationChain } from "express-validator";
+import { AppError } from "../utils/AppError";
 
-export const validate =
-  (schema: AnyZodObject) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    try {
-      schema.parse({
-        body: req.body,
-        query: req.query,
-        params: req.params,
-      });
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return res.status(400).json({
-          success: false,
-          message: "Validation failed",
-          errors: error.errors,
-        });
+export const validate = (rules: ValidationChain[]) => {
+  return [
+    ...rules,
+    (req: Request, res: Response, next: NextFunction) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const firstError = errors.array()[0].msg;
+        return next(new AppError(firstError, 400));
       }
-      next(error);
-    }
-  };
+      next();
+    },
+  ];
+};
