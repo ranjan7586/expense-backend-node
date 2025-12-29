@@ -10,7 +10,7 @@ import { setLanguage } from "./middlewares/language.middleware";
 import { globalErrorHandler } from "./middlewares/error.middleware";
 
 const app = express();
-const whiteListURLs: string[] = ["http://localhost:5173"];
+const whiteListURLs: string[] = ["http://localhost:5173", "https://expense-tracker-v2-lac.vercel.app"];
 
 const corsOptions: CorsOptions = {
   origin: (
