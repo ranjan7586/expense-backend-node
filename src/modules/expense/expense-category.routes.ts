@@ -15,6 +15,9 @@ router.post(
   expenseCategoryController.createExpenseCategory
 );
 
+router.patch("/update/:id", expenseCategoryController.updateExpenseCategory);
+router.delete("/delete/:id", expenseCategoryController.deleteExpenseCategory);
+
 // router
 //   .route("/:id")
 //   .get(getExpenseCategoryByIdController)
