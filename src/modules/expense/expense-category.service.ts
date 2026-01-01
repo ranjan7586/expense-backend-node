@@ -35,9 +35,10 @@ class ExpenseCategoryService {
     id: string,
     expenseCategory: Partial<IExpenseCategory>
   ) => {
+    const { name, type } = expenseCategory;
     const updatedExpenseCategory = await ExpenseCategory.findByIdAndUpdate(
       id,
-      expenseCategory,
+      { name, type },
       { new: true }
     );
     if (!updatedExpenseCategory) {
@@ -47,7 +48,9 @@ class ExpenseCategoryService {
   };
 
   deleteExpenseCategory = async (id: string) => {
-    const deletedExpenseCategory = await ExpenseCategory.findByIdAndDelete(id);
+    const deletedExpenseCategory = await ExpenseCategory.findByIdAndUpdate(id, {
+      deletedAt: new Date(),
+    });
     if (!deletedExpenseCategory) {
       throw new AppError("Expense category not found", 404);
     }
