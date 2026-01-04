@@ -3,18 +3,18 @@ import Expense, { IExpense } from "./expense.model";
 import ExpenseCategory from "./expense.category.model";
 
 export const createExpense = async (
-  expense: Partial<IExpense & { category_id: string }>,
+  expense: Partial<IExpense & { category: string }>,
   userId: string
 ) => {
-  const { category_id, date, ...rest } = expense;
-  const category = await ExpenseCategory.findById(category_id);
-  if (!category) {
+  const { category, date, ...rest } = expense;
+  const category_main = await ExpenseCategory.findById(category);
+  if (!category_main) {
     throw new AppError("Category not found", 404);
   }
   const newExpense = await Expense.create({
     ...rest,
     date: new Date(date!),
-    category: category._id,
+    category: category_main._id,
     createdBy: userId,
     updatedBy: userId,
   });
@@ -22,7 +22,7 @@ export const createExpense = async (
 };
 
 export const getExpenses = async (userId: string) => {
-  const expenses = await Expense.find({ createdBy: userId, deletedAt: null });
+  const expenses = await Expense.find({ createdBy: userId, deletedAt: null }).populate("category", ["name", "type"]);
   return expenses;
 };
 
@@ -36,14 +36,14 @@ export const getExpenseById = async (id: string) => {
 
 export const updateExpense = async (
   id: string,
-  expense: Partial<IExpense & { category_id: string }>,
+  expense: Partial<IExpense & { category: string }>,
   userId: string
 ) => {
-  const { category_id, date, ...rest } = expense;
-  let category;
-  if (category_id) {
-    category = await ExpenseCategory.findById(category_id);
-    if (!category) {
+  const { category, date, ...rest } = expense;
+  let category_main;
+  if (category) {
+    category_main = await ExpenseCategory.findById(category);
+    if (!category_main) {
       throw new AppError("Category not found", 404);
     }
   }
@@ -52,7 +52,7 @@ export const updateExpense = async (
     {
       ...rest,
       ...(date && { date: new Date(date) }),
-      ...(category && { category: category._id }),
+      ...(category_main && { category: category_main._id }),
       updatedBy: userId,
     },
     { new: true }

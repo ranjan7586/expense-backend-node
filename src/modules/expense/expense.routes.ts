@@ -8,11 +8,13 @@ import {
 } from "./expense.controller";
 import { validate } from "../../middlewares/validate.middleware";
 import { expenseValidation } from "./expense.validation";
+import { authMiddleware } from "../../middlewares/auth.middleware";
 
 const router = Router();
 
+router.use(authMiddleware);
 router.get("/", getExpensesController);
-router.post("/create", expenseValidation, createExpenseController);
+router.post("/create", validate(expenseValidation), createExpenseController);
 
 // router
 //   .route("/:id")

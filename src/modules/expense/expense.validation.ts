@@ -63,7 +63,7 @@ export const expenseValidation = [
     .withMessage("Expense for is required")
     .isIn(["personal", "others"])
     .withMessage("Invalid expense for"),
-  body("category_id")
+  body("category")
     .notEmpty()
     .withMessage("Category is required")
     .isString()
