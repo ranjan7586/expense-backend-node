@@ -3,12 +3,19 @@ import { body } from "express-validator";
 export const budgetValidation = [
   body("period")
     .notEmpty()
+    .withMessage("Budget period is required")
     .isIn(["daily", "weekly", "monthly", "yearly"])
     .withMessage("Invalid budget period"),
-  body("year").notEmpty().isInt({ min: 2000 }).withMessage("Invalid year"),
+  body("year")
+    .notEmpty()
+    .withMessage("Year is required")
+    .isInt({ min: 2000 })
+    .withMessage("Invalid year"),
   body("amount")
     .notEmpty()
+    .withMessage("Amount is required")
     .isNumeric()
+    .withMessage("Invalid amount")
     .isFloat({ min: 0 })
     .withMessage("Invalid amount"),
 
@@ -22,6 +29,7 @@ export const budgetValidation = [
     .custom((value) => {
       if (value !== undefined)
         throw new Error("Day is only allowed for daily budget");
+      return true;
     }),
 
   body("week")
@@ -34,6 +42,7 @@ export const budgetValidation = [
     .custom((value) => {
       if (value !== undefined)
         throw new Error("Week is only allowed for weekly budget");
+      return true;
     }),
 
   body("month")
@@ -46,5 +55,6 @@ export const budgetValidation = [
     .custom((value) => {
       if (value !== undefined)
         throw new Error("Month is only allowed for monthly budget");
+      return true;
     }),
 ];

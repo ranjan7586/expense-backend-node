@@ -1,11 +1,13 @@
 import express from "express";
 import userRoutes from "../modules/user/user.routes";
+import budgetRoutes from "../modules/budget/budget.routes";
 import expenseRoutes from "../modules/expense/expense.routes";
 import expenseCategoryRoutes from "../modules/expense/expense-category.routes";
 
 const router = express.Router();
 
 router.use("/users", userRoutes);
+router.use("/budget", budgetRoutes);
 router.use("/expenses", expenseRoutes);
 router.use("/expense-categories", expenseCategoryRoutes);
 

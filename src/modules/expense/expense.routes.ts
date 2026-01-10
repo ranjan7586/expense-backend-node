@@ -4,6 +4,7 @@ import {
   deleteExpenseController,
   getExpenseByIdController,
   getExpensesController,
+  getTotalExpense,
   updateExpenseController,
 } from "./expense.controller";
 import { validate } from "../../middlewares/validate.middleware";
@@ -15,6 +16,7 @@ const router = Router();
 router.use(authMiddleware);
 router.get("/", getExpensesController);
 router.post("/create", validate(expenseValidation), createExpenseController);
+router.get("/get-total-expense/:period", getTotalExpense);
 
 // router
 //   .route("/:id")

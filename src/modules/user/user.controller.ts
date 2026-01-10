@@ -24,7 +24,6 @@ class UserController {
   });
 
   loginUser = catchAsync(async (req: Request, res: Response) => {
-    console.log("Controller Loaded");
     if (!req.body.email || !req.body.password) {
       throw new AppError(req.lang.errors.all_fields_required, 400);
     }
